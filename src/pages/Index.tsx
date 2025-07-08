@@ -3,9 +3,11 @@ import { Header } from "@/components/Header";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { VideoSubmissionForm, VideoSubmissionData } from "@/components/VideoSubmissionForm";
 import { ChainTimeline } from "@/components/ChainTimeline";
+import { LoginPrompt } from "@/components/LoginPrompt";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { Sparkles, ArrowRight, Globe, Users, Zap } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
 
@@ -47,6 +49,7 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
   const { toast } = useToast();
+  const { user, loading } = useAuth();
 
   const handleVideoSubmission = async (videoData: VideoSubmissionData): Promise<boolean> => {
     setIsSubmitting(true);
@@ -139,7 +142,7 @@ const Index = () => {
           </div>
           
           <div className="text-center space-y-4">
-            {!showSubmissionForm && (
+            {!loading && user && !showSubmissionForm && (
               <Button 
                 onClick={() => setShowSubmissionForm(true)}
                 variant="playful"
@@ -154,8 +157,15 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Login Prompt for non-authenticated users */}
+        {!loading && !user && (
+          <section className="animate-slide-in-up">
+            <LoginPrompt />
+          </section>
+        )}
+
         {/* Submission Form */}
-        {showSubmissionForm && (
+        {showSubmissionForm && user && (
           <section className="animate-slide-in-up">
             <VideoSubmissionForm 
               onSubmit={handleVideoSubmission}

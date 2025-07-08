@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { AuthButton } from "@/components/AuthButton";
 import { Zap, Globe, Sparkles } from "lucide-react";
 
 export const Header = () => {
@@ -19,11 +20,12 @@ export const Header = () => {
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-gradient-accent border-0 text-accent-foreground">
+          <div className="flex items-center gap-4">
+            <Badge variant="outline" className="bg-gradient-accent border-0 text-accent-foreground hidden sm:flex">
               <Globe className="w-3 h-3 mr-1" />
               Worldwide
             </Badge>
+            <AuthButton />
           </div>
         </div>
       </div>

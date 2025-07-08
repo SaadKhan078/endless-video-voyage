@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MapPin, Calendar, User } from "lucide-react";
 
 interface VideoPlayerProps {
   videoId: string;
@@ -10,6 +11,9 @@ interface VideoPlayerProps {
   country: string;
   addedAt: string;
   isLatest?: boolean;
+  userEmail?: string;
+  userName?: string;
+  userAvatarUrl?: string;
 }
 
 export const VideoPlayer = ({ 
@@ -19,7 +23,10 @@ export const VideoPlayer = ({
   description, 
   country, 
   addedAt,
-  isLatest = false 
+  isLatest = false,
+  userEmail,
+  userName,
+  userAvatarUrl 
 }: VideoPlayerProps) => {
   const getEmbedUrl = () => {
     if (platform === 'youtube') {
@@ -70,9 +77,26 @@ export const VideoPlayer = ({
           </div>
         </div>
         
-        <Badge variant="outline" className="w-fit capitalize">
-          {platform}
-        </Badge>
+        <div className="flex items-center justify-between">
+          <Badge variant="outline" className="w-fit capitalize">
+            {platform}
+          </Badge>
+          
+          {userName && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Added by</span>
+              <div className="flex items-center gap-2">
+                <Avatar className="h-6 w-6">
+                  <AvatarImage src={userAvatarUrl || undefined} alt={userName} />
+                  <AvatarFallback className="bg-gradient-primary text-primary-foreground text-xs">
+                    {userName.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="font-medium">{userName}</span>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </Card>
   );
